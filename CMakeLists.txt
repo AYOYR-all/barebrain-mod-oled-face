@@ -1,0 +1,10 @@
+idf_component_register(
+    SRCS
+        "src/mod_tool_oled_face.c"
+        "src/tool_oled_face.c"
+    INCLUDE_DIRS
+        "src"
+    REQUIRES
+        json
+        freertos
+)
