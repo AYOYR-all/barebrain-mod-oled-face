@@ -23,6 +23,7 @@ static bool is_supported_emotion(const char *emotion)
     return emotion &&
            (strcmp(emotion, "idle") == 0 ||
             strcmp(emotion, "happy") == 0 ||
+            strcmp(emotion, "online") == 0 ||
             strcmp(emotion, "thinking") == 0 ||
             strcmp(emotion, "error") == 0 ||
             strcmp(emotion, "speaking") == 0);
@@ -102,7 +103,7 @@ esp_err_t tool_oled_face_execute(const char *input_json, char *output, size_t ou
     const char *emotion = cJSON_GetStringValue(cJSON_GetObjectItem(root, "emotion"));
     if (!is_supported_emotion(emotion)) {
         cJSON_Delete(root);
-        snprintf(output, output_size, "Error: emotion must be idle, happy, thinking, error or speaking");
+        snprintf(output, output_size, "Error: emotion must be idle, happy, online, thinking, error or speaking");
         return ESP_ERR_INVALID_ARG;
     }
 

@@ -2,9 +2,9 @@
     "schema":  1,
     "id":  "tool-oled-face",
     "name":  "OLED Face",
-    "version":  "0.1.1",
+    "version":  "0.1.2",
     "type":  "tool",
-    "description":  "Take over the OLED screen and render idle, happy, thinking, error, and speaking expressions.",
+    "description":  "Take over the OLED screen and render idle, happy, online, thinking, error, and speaking expressions.",
     "targets":  [
                     "esp32s3"
                 ],

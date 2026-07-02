@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Add the `online` face state for LLM answer-ready feedback.
+- Keep `happy` available for WiFi-connected feedback.
+
 ## 0.1.1
 
 - Add a firmware feedback hook so WiFi, LLM, and TTS events can drive OLED expressions.

@@ -11,17 +11,18 @@ Supported emotions:
 
 - `idle`
 - `happy`
+- `online`
 - `thinking`
 - `error`
 - `speaking`
 
-Automatic feedback in v0.1.1:
+Automatic feedback in v0.1.2:
 
 - WiFi connecting: `thinking`
 - WiFi connected: temporary `happy`
 - WiFi setup/error: `error`
 - LLM processing: `thinking`
-- LLM answer ready: temporary `happy`
+- LLM answer ready: temporary `online`
 - LLM failure: temporary `error`
 - WonderEcho `tts_speak`: temporary `speaking`
 
@@ -29,7 +30,7 @@ Example tool call:
 
 ```json
 {
-  "emotion": "happy"
+  "emotion": "online"
 }
 ```
 
