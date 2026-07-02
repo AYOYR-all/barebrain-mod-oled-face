@@ -30,7 +30,7 @@ static esp_err_t tool_oled_face_mod_init(void)
 const brn_mod_t brn_mod_tool_oled_face = {
     .id = "tool-oled-face",
     .name = "OLED Face Tool",
-    .version = "0.1.0",
+    .version = "0.1.1",
     .deps = tool_oled_face_deps,
     .init = tool_oled_face_mod_init,
 };

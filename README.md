@@ -1,13 +1,13 @@
-# BareBrain OLED 表情插件
+# BareBrain OLED Face Plugin
 
-`tool-oled-face` 依赖 `tool-oled`，用于在 SSD1306 兼容 OLED 屏幕上显示表情动画。
+`tool-oled-face` depends on `tool-oled` and renders animated faces on the
+SSD1306-compatible OLED.
 
-启用规则：
+When enabled, it takes over the OLED from the base clock screen. The registered
+tool `oled_face` can still switch expressions manually, and firmware feedback
+events can also drive the face automatically.
 
-- 只启用 `tool-oled`：OLED 默认显示时间、日期和星期。
-- 同时启用 `tool-oled` 和 `tool-oled-face`：表情插件接管 OLED，时间界面停止刷新。
-
-支持的表情：
+Supported emotions:
 
 - `idle`
 - `happy`
@@ -15,7 +15,17 @@
 - `error`
 - `speaking`
 
-工具调用示例：
+Automatic feedback in v0.1.1:
+
+- WiFi connecting: `thinking`
+- WiFi connected: temporary `happy`
+- WiFi setup/error: `error`
+- LLM processing: `thinking`
+- LLM answer ready: temporary `happy`
+- LLM failure: temporary `error`
+- WonderEcho `tts_speak`: temporary `speaking`
+
+Example tool call:
 
 ```json
 {
@@ -23,4 +33,5 @@
 }
 ```
 
-这个插件不需要额外配置 GPIO，复用 `tool-oled` 的 SCL/SDA 配置。
+This plugin does not require extra GPIO configuration. It reuses the SCL/SDA
+configuration from `tool-oled`.

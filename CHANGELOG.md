@@ -1,7 +1,12 @@
 # Changelog
 
-## v0.1.0
+## 0.1.1
 
-- 新增 OLED 表情插件。
-- 支持待机、开心、思考、错误和说话表情。
-- 启用后自动关闭 `tool-oled` 的时间界面刷新。
+- Add a firmware feedback hook so WiFi, LLM, and TTS events can drive OLED expressions.
+- Support temporary expressions that automatically return to `idle`.
+
+## 0.1.0
+
+- Add the `tool-oled-face` expression plugin.
+- Support `idle`, `happy`, `thinking`, `error`, and `speaking` faces.
+- Disable the base `tool-oled` clock screen while the face renderer is active.

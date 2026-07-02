@@ -1,39 +1,54 @@
-{
-  "schema": 1,
-  "id": "tool-oled-face",
-  "name": "OLED 表情",
-  "version": "0.1.0",
-  "type": "tool",
-  "description": "接管 OLED 显示屏并显示待机、开心、思考、错误和说话表情。",
-  "targets": ["esp32s3"],
-  "barebrain_min": "0.1.0",
-  "barebrain_max": "0.x",
-  "sources": [
-    "src/mod_tool_oled_face.c",
-    "src/tool_oled_face.c"
-  ],
-  "headers": [
-    "src/tool_oled_face.h"
-  ],
-  "dependencies": [
-    "tool-oled",
-    "core.tool_registry"
-  ],
-  "conflicts": [],
-  "permissions": [
-    "i2c.write"
-  ],
-  "idf_components": ["json", "freertos"],
-  "tools": [
-    "oled_face"
-  ],
-  "services": [],
-  "resources": {
-    "tasks": 1,
-    "gpio": [],
-    "i2c": ["uses-tool-oled"],
-    "psram_bytes_hint": 4096,
-    "flash_bytes_hint": 24576
-  },
-  "config_schema": {}
+﻿{
+    "schema":  1,
+    "id":  "tool-oled-face",
+    "name":  "OLED Face",
+    "version":  "0.1.1",
+    "type":  "tool",
+    "description":  "Take over the OLED screen and render idle, happy, thinking, error, and speaking expressions.",
+    "targets":  [
+                    "esp32s3"
+                ],
+    "barebrain_min":  "0.1.0",
+    "barebrain_max":  "0.x",
+    "sources":  [
+                    "src/mod_tool_oled_face.c",
+                    "src/tool_oled_face.c"
+                ],
+    "headers":  [
+                    "src/tool_oled_face.h"
+                ],
+    "dependencies":  [
+                         "tool-oled",
+                         "core.tool_registry"
+                     ],
+    "conflicts":  [
+
+                  ],
+    "permissions":  [
+                        "i2c.write"
+                    ],
+    "idf_components":  [
+                           "json",
+                           "freertos"
+                       ],
+    "tools":  [
+                  "oled_face"
+              ],
+    "services":  [
+
+                 ],
+    "resources":  {
+                      "tasks":  1,
+                      "gpio":  [
+
+                               ],
+                      "i2c":  [
+                                  "uses-tool-oled"
+                              ],
+                      "psram_bytes_hint":  4096,
+                      "flash_bytes_hint":  24576
+                  },
+    "config_schema":  {
+
+                      }
 }

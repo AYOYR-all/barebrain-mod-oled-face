@@ -7,6 +7,7 @@
 #include "cJSON.h"
 #include "esp_check.h"
 #include "esp_log.h"
+#include "feedback/face_state.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
@@ -15,6 +16,7 @@
 static const char *TAG = "tool_oled_face";
 static SemaphoreHandle_t s_lock;
 static char s_emotion[16] = "idle";
+static TickType_t s_until_tick;
 
 static bool is_supported_emotion(const char *emotion)
 {
@@ -34,6 +36,10 @@ static void face_task(void *arg)
 
     while (true) {
         if (xSemaphoreTake(s_lock, pdMS_TO_TICKS(200)) == pdTRUE) {
+            if (s_until_tick != 0 && xTaskGetTickCount() >= s_until_tick) {
+                strlcpy(s_emotion, "idle", sizeof(s_emotion));
+                s_until_tick = 0;
+            }
             strlcpy(emotion, s_emotion, sizeof(emotion));
             xSemaphoreGive(s_lock);
         } else {
@@ -62,6 +68,25 @@ esp_err_t tool_oled_face_init(void)
     return created == pdPASS ? ESP_OK : ESP_ERR_NO_MEM;
 }
 
+esp_err_t tool_oled_face_set(const char *emotion, uint32_t duration_ms)
+{
+    if (!is_supported_emotion(emotion)) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (!s_lock || xSemaphoreTake(s_lock, pdMS_TO_TICKS(1000)) != pdTRUE) {
+        return ESP_ERR_INVALID_STATE;
+    }
+    strlcpy(s_emotion, emotion, sizeof(s_emotion));
+    s_until_tick = duration_ms > 0 ? xTaskGetTickCount() + pdMS_TO_TICKS(duration_ms) : 0;
+    xSemaphoreGive(s_lock);
+    return ESP_OK;
+}
+
+esp_err_t brn_face_set(const char *emotion, uint32_t duration_ms)
+{
+    return tool_oled_face_set(emotion, duration_ms);
+}
+
 esp_err_t tool_oled_face_execute(const char *input_json, char *output, size_t output_size)
 {
     if (!input_json || !output || output_size == 0) {
@@ -81,14 +106,12 @@ esp_err_t tool_oled_face_execute(const char *input_json, char *output, size_t ou
         return ESP_ERR_INVALID_ARG;
     }
 
-    if (xSemaphoreTake(s_lock, pdMS_TO_TICKS(1000)) != pdTRUE) {
-        cJSON_Delete(root);
-        snprintf(output, output_size, "Error: OLED face state is busy");
-        return ESP_ERR_TIMEOUT;
-    }
-    strlcpy(s_emotion, emotion, sizeof(s_emotion));
-    xSemaphoreGive(s_lock);
+    esp_err_t err = tool_oled_face_set(emotion, 0);
     cJSON_Delete(root);
+    if (err != ESP_OK) {
+        snprintf(output, output_size, "Error: OLED face state failed (%s)", esp_err_to_name(err));
+        return err;
+    }
 
     snprintf(output, output_size, "OLED face switched to %s", emotion);
     return ESP_OK;
